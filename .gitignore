@@ -1,55 +1,70 @@
-# Prerequisites
-*.d
+# ===================================================================
+# 飞控项目「开箱即编译 + 开箱即烧录」专用 .gitignore（2025终极版）
+# 适用于：STM32F405 + CubeMX + CMake + VSCode + OpenOCD/ST-Link
+# 拉下来直接 cmake -B build && cmake --build build 就能出 elf/bin/hex
+# ===================================================================
 
-# Object files
-*.o
-*.ko
-*.obj
+# 1. 每个人自己生成的编译目录（必须忽略）
+build/
+Build/
+BUILD/
+out/
+Out/
+
+# 2. CMake 自动生成的中间文件（全部忽略）
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CMakeCache.txt
+Makefile
+CMakePresets.json
+compile_commands.json         # 虽然有用，但体积大且每次都变，不提交
+*.dir/
+
+# 3. 编译产物（固件、map等全部忽略）
 *.elf
-
-# Linker output
-*.ilk
-*.map
-*.exp
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
+*.bin
 *.hex
+*.map
+*.lst
+*.axf
+*.srec
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
+# 4. CubeMX 自动生成的 IDE 文件（这些谁都不提交）
+.mxproject
+*.cproject
+*.project
+*.launch
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+# 5. VSCode 缓存和个人设置（只提交团队共享配置）
+.vscode/
+!.vscode/settings.json          # 必须提交：格式化、路径补全
+!.vscode/tasks.json             # 必须提交：统一编译任务
+!.vscode/launch.json            # 必须提交：OpenOCD/ST-Link 调试配置
+!.vscode/c_cpp_properties.json  # 必须提交：IntelliSense 能用
 
-# debug information files
-*.dwo
+# 6. 其他编辑器/IDE 垃圾
+.idea/
+*.swp
+*.swo
+*.swn
+*~
+*.tmp
+
+# 7. 系统垃圾
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ===================================================================
+# 下面这些全部都要提交！（本文件故意一个都不忽略）
+# ===================================================================
+# MARK4_F405_PROJ.ioc                ← 硬件配置核心，必须提交
+# Drivers/ 整个文件夹                ← 飞控必改 HAL 驱动，必须完整提交
+# Core/ 整个文件夹                   ← 包含 main.c 和 CubeMX 生成的初始化代码
+# startup_stm32f405xx.s             ← 启动文件
+# STM32F405RGTx_FLASH.ld            ← 链接脚本
+# CMakeLists.txt                    ← 你的 CMake 配置
+# .vscode/*.json                    ← 上面已经用 ! 强制提交
+# 以及你自己写的各种 .c / .h / .cpp 文件
+# ===================================================================
